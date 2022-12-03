@@ -5,11 +5,12 @@ metadata:
   labels:
     app: {{ .Release.Name }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
-    {{- range .Values.ports }}
-      - name: {{ .name }}
-        port: {{ .containerPort }}
-        protocol: {{ .protocol }}
+    {{- range $k, $v := .Values.service.ports }}
+      - name: {{ $k }}
+        port: {{ $v.port }}
+        protocol: {{ default "TCP" $v.protocol }}
     {{- end }}
   selector:
     app: {{ .Release.Name }}

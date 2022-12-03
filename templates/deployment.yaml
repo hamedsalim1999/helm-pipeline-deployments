@@ -21,17 +21,17 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ default "IfNotPresent" .Values.pullPolicy }}
+          {{- if .Values.env }}
           env:
-          {{- range .Values.env }}
-            - name: {{ .name }}
-              value: {{ .value }}
+          {{- range $k, $v := .Values.env }}
+            - name: {{ $k}}
+              value: {{ $v }}
           {{- end }}
           ports:
-          {{- range .Values.ports }}
-            - name: {{ .name }}
-              containerPort: {{ .containerPort }}
-              protocol: {{ .protocol }}
+            {{- range $k, $v := .Values.ports }}
+              - name: {{ $k }}
+                value: {{ $v.port }}
+                protocol: {{ $v.protocol }}
+            {{- end }}
           {{- end }}
-
-
