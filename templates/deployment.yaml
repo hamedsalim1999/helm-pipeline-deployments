@@ -30,8 +30,6 @@ spec:
           {{- end }}
           ports:
             {{- range $k, $v := .Values.ports }}
-              - name: {{ $k }}
-                value: {{ $v.port }}
-                protocol: {{ $v.protocol }}
+              - containerPort: {{ $v }}
             {{- end }}
           {{- end }}
