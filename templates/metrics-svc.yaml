@@ -1,0 +1,21 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+  name: {{ .Release.Name}}-service-metrics
+  namespace: {{ .Values.metrics.namespace }}
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: {{ .Release.Name}}-service-metrics
+    port: {{ .Values.metrics.port}}
+    protocol: TCP
+    targetPort: {{ .Values.metrics.targetport}}
+  selector:
+    app: {{ .Release.Name}}
+  type: ClusterIP
+{{- end }}
