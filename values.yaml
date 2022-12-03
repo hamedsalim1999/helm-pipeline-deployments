@@ -9,7 +9,8 @@ image: nginx
 env:
   hamed: salim
   asqar: farhadi
-
+ports:
+  main: 80
 service:
   type: ClusterIP
   ports: 
@@ -18,6 +19,7 @@ service:
       protocol: TCP 
 
 ingress:
+  enabled: true
   ingressClassName: nginx
   rules:
     main:
@@ -25,3 +27,5 @@ ingress:
       pathType: Prefix
       path: "/"
       port: 80
+metrics:
+  enabled: false
