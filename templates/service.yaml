@@ -6,11 +6,21 @@ metadata:
     app: {{ .Release.Name }}
 spec:
   type: {{ .Values.service.type }}
+  {{ if eq .Values.service.type "ClusterIP" }}
   ports:
     {{- range $k, $v := .Values.service.ports }}
       - name: {{ $k }}
         port: {{ $v.port }}
         protocol: {{ default "TCP" $v.protocol }}
     {{- end }}
+  {{ else if eq .Values.service.type "NodePort" }}
+  ports:
+    {{- range $k, $v := .Values.service.ports }}
+      - name: {{ $k }}
+        port: {{ $v.port }}
+        targetPort: {{ $v.targetPort }}
+        protocol: {{ default "TCP" $v.protocol }}
+        nodePort: {{ $v.nodePort }}
+  {{- end }}
   selector:
     app: {{ .Release.Name }}
